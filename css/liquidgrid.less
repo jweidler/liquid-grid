@@ -65,22 +65,22 @@
 
 // generates two classes that are setting widths for two elements
 .twoSections(@name, @value, @value2) {
-  (~".grid.@{name}-X > *:nth-child(1)"),
-  (~".grid.X-@{name} > *:nth-child(2)") {
+  (~".g-@{name}-X > .g-el:nth-child(1)"),
+  (~".g-X-@{name} > .g-el:nth-child(2)") {
     .percentalWidth(@value);
   }
-  (~".grid.@{name}-X > *:nth-child(2)"),
-  (~".grid.X-@{name} > *:nth-child(1)") {
+  (~".g-@{name}-X > .g-el:nth-child(2)"),
+  (~".g-X-@{name} > .g-el:nth-child(1)") {
     .percentalWidth(@value2);
     //.percentalWidth(1-@value);
   }
 }
 
 .grid-gutter(@gutter) {
-  .grid {
+  .g {
     margin: 0 -@gutter/2;
   }
-  .grid > * {
+  .g > .g-el {
     padding: 0 @gutter/2;
   }
 }
@@ -106,7 +106,7 @@ figure img {
   height: auto;
 }
 
-.grid {
+.g {
   // Don't set width to 100%, because then negative margin to pull 
   // the grid back to outer grid lines won't work.
   width: auto;
@@ -118,15 +118,15 @@ figure img {
 }
 // Since we're not using inline-block elements and we don't want elements
 // to get stuck, we have to clear every set of grid elements.
-.grid:before,
-.grid > *:before,
-.grid:after,
-.grid > *:after {
+.g:before,
+.g > .g-el:before,
+.g:after,
+.g > .g-el:after {
     content: " ";
     display: table;
 }
-.grid:after,
-.grid > *:after {
+.g:after,
+.g > .g-el:after {
   clear: both;
 }
 .grid-wrapper {
@@ -139,13 +139,13 @@ figure img {
 
 // This class could be used to make a grid overlap its borders
 // that were set by its parent element's width.
-.grid.pull {
+.g.pull {
   margin: 0 -@gutter/2;
 }
 
 .grid-gutter(16px);
 
-.grid > * {
+.g > .g-el {
   // Grid cells "float" simplier when set to inline-block rather
   // than floating them the traditional way. But: we cannot easily change their
   // floating direction, by setting the main content float: right; to appear
@@ -164,26 +164,26 @@ figure img {
   padding: 0 @gutter/2;
 }
 
-.third-X > *,
-.X-third > *,
-.quarter-X > *,
-.X-quarter > *,
-.fifth-X > *,
-.X-fifth > *,
-.sixth-X > *,
-.X-sixth > *,
-.phi-X > *,
-.X-phi > * {
+.g-third-X > .g-el,
+.g-X-third > .g-el,
+.g-quarter-X > .g-el,
+.g-X-quarter > .g-el,
+.g-fifth-X > .g-el,
+.g-X-fifth > .g-el,
+.g-sixth-X > .g-el,
+.g-X-sixth > .g-el,
+.g-phi-X > .g-el,
+.g-X-phi > .g-el {
   display: block;
   float: left;
 }
 
-.grid > .grid {
+.g > .g {
   margin: 0;
   padding: 0;
 }
 
-.grid.full > * {
+.g-full > .g-el {
   .percentalWidth(1);
 }
 
@@ -197,14 +197,14 @@ figure img {
 
   // The single-row class for native carousel-like behaviour.
   // Enhance with JS if necessary.
-  .grid.single-row {
+  .g.single-row {
     white-space: nowrap;
     overflow: auto;
     // avoid issue: 
     // when using different font sizes, a vertical scrollbar appears occasionally
     padding-bottom: 1px;
     
-    > * {
+    > .g-el {
       // Set elements to "float" as inline blocks.
       // There must be no white space between elements.
       float: none;
@@ -216,21 +216,21 @@ figure img {
     }
   }
 
-  .grid.halfs > *,
-  .grid.quarters > *,
-  .grid.sixths > *,
-  .grid.fifths > *:nth-child(4),
-  .grid.fifths > *:nth-child(5) {
+  .g-halfs > .g-el,
+  .g-quarters > .g-el,
+  .g-sixths > .g-el,
+  .g-fifths > .g-el:nth-child(4),
+  .g-fifths > .g-el:nth-child(5) {
     .percentalWidth(1/2);
   }
-  .grid.thirds > *,
-  .grid.fifths > * {
+  .g-thirds > .g-el,
+  .g-fifths > .g-el {
     .percentalWidth(1/3);
   }
-  .grid .grid.halfs > * {
+  .g .g-halfs > .g-el {
     .percentalWidth(1);
   }
-  .grid .grid.thirds > * {
+  .g .g-thirds > .g-el {
     .percentalWidth(1);
   }
 
@@ -244,7 +244,7 @@ figure img {
 
 //@media only screen and (min-width: 569px) {
 @media only screen and (min-width: 35.5625em) {
-  .grid.sixths > * {
+  .g-sixths > .g-el {
     .percentalWidth(1/3);
   }
   .grid-gutter(20px);
@@ -259,7 +259,7 @@ figure img {
     padding: 0 3%;
   }
 
-  .grid.sixths > * {
+  .g-sixths > .g-el {
     .percentalWidth(1/4);
   }
 
@@ -276,15 +276,15 @@ figure img {
   }
   .grid-gutter(24px);
 
-  //.grid.quarters > * {
+  //.g-quarters > .g-el {
   //  .percentalWidth(1/4);
   //}
 
-  .grid .grid.halfs > * {
+  .g .g-halfs > .g-el {
     .percentalWidth(1/2);
   }
   
-  .grid.sixths > * {
+  .g-sixths > .g-el {
     .percentalWidth(1/5);
   }
   
@@ -292,7 +292,7 @@ figure img {
 
 //@media only screen and (min-width: 1025px) {
 @media only screen and (min-width: 64.0625em) {
-  .grid.quarters > * {
+  .g-quarters > .g-el {
     .percentalWidth(1/4);
   }
 }
@@ -307,17 +307,17 @@ figure img {
   }
   .grid-gutter(20px);
 
-  .grid .grid.thirds > * {
+  .g .g-thirds > .g-el {
     .percentalWidth(1/3);
   }
 
-  .grid.fifths > *,
-  .grid.fifths > *:nth-child(4),
-  .grid.fifths > *:nth-child(5) {
+  .g-fifths > .g-el,
+  .g-fifths > .g-el:nth-child(4),
+  .g-fifths > .g-el:nth-child(5) {
     .percentalWidth(1/5);
   }
 
-  .grid.sixths > * {
+  .g-sixths > .g-el {
     .percentalWidth(1/6);
   }
 

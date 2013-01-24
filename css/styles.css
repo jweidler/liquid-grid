@@ -21,7 +21,7 @@ body {
   margin: 0 auto;
   padding: 3% 0;
   background: #fff;
-  border-radius: 2px;
+  border-radius: 50% / 1em;
   box-shadow: 
     0 0 84px rgba(0,0,0,0.2),
     0 4px 4px -4px rgba(0,0,0,0.2);
@@ -89,7 +89,7 @@ section {
 
 
 /* grid */
-.grid .wrapper {
+.g .wrapper {
   background: #eee;
   padding: 0.5em 4%;
   border-radius: 4px;
@@ -106,7 +106,7 @@ section {
     /*letter-spacing: -1px;*/
   }
 
-  .grid .wrapper {
+  .g .wrapper {
     padding: 0.5em 10%;
   }
 }
