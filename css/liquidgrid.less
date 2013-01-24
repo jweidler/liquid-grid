@@ -1,0 +1,325 @@
+// liquidgrid.less
+
+// The main goal of this grid is to provide solid and flexible layout CSS classes
+// that take clever responsiveness into account.
+
+// Instead of defining just one grid and many little cells that can be used within
+// that grid it defines sub-grids that layout their children.
+// Usually it's not important if all the lines in a grid follow the grid blue print.
+// What's important is that a grid makes it easy to layout contents in a flexible and
+// organized way.
+
+// A grid should never dictate how many content elements can displayed. It should
+// provide tools to make any number be displayed well at any given viewport space.
+// Traditional grid classes that define widths for column elements like "span2"
+// are pretty much like inline styles: they tell a specific element how to look like.
+// Whereas parent classes for sub-grids defining widths for their children actually 
+// state abstract information about the relations of the elements between each other.
+// Also, it is a lot easier to define a certain behaviour for different viewports
+// and a group of elements than single elements with no further context.
+
+// Problems that this grid aims to solve:
+// - How can I display five equally spread columns in a 12-column or 16-column grid?
+// - Moving column elements from one place to another.
+
+// Grid classes:
+
+// For equally important, serial contents (lists, lists of articles, images) use:
+// full
+// halfs
+// thirds
+// quarters
+// fifths
+// sixths
+
+// In addition to that you can define sub-grids as single-row which shows only the
+// first few elements initially and hides further elements outside of the viewport,
+// reachable through scrolling or JS enhanced sliding.
+
+// For parallel, hierarchical contents (e.g. main content/sidebar), use:
+// third-X
+// X-third
+// quarter-X
+// X-quarter
+// fifth-X
+// X-fifth
+// sixth-X
+// X-sixth
+// phi-X
+// X-phi
+
+// You can always nest sub-grids if it makes sense to you.
+
+// The gutter has to be set as absolute pixel value and cannot be defined
+// as percentage value because nested grid elements would otherwise be rendered
+// with different pixel values which would lead to cricket grid lines.
+// The gutter should
+@gutter: 20px;
+@gutter2: 30px;
+@gutter3: 40px;
+
+// 
+.percentalWidth(@fraction) {
+  width: 0% + (100*@fraction);
+}
+
+// generates two classes that are setting widths for two elements
+.twoSections(@name, @value, @value2) {
+  (~".grid.@{name}-X > *:nth-child(1)"),
+  (~".grid.X-@{name} > *:nth-child(2)") {
+    .percentalWidth(@value);
+  }
+  (~".grid.@{name}-X > *:nth-child(2)"),
+  (~".grid.X-@{name} > *:nth-child(1)") {
+    .percentalWidth(@value2);
+    //.percentalWidth(1-@value);
+  }
+}
+
+.grid-gutter(@gutter) {
+  .grid {
+    margin: 0 -@gutter/2;
+  }
+  .grid > * {
+    padding: 0 @gutter/2;
+  }
+}
+
+.box-sizing(@boxsizing) {
+  -webkit-box-sizing: @boxsizing;
+  -moz-box-sizing: @boxsizing;
+  -o-box-sizing: @boxsizing;
+  -ms-box-sizing: @boxsizing;
+  box-sizing: @boxsizing;
+}
+
+body {
+  padding: 0 2%;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
+}
+figure img {
+  width: 100%;
+  height: auto;
+}
+
+.grid {
+  // Don't set width to 100%, because then negative margin to pull 
+  // the grid back to outer grid lines won't work.
+  width: auto;
+
+  // Subtract the inside gutter on the outside to set outside gutter separately :-)
+  //margin: 0 -@gutter/2;
+
+  .box-sizing(border-box);
+}
+// Since we're not using inline-block elements and we don't want elements
+// to get stuck, we have to clear every set of grid elements.
+.grid:before,
+.grid > *:before,
+.grid:after,
+.grid > *:after {
+    content: " ";
+    display: table;
+}
+.grid:after,
+.grid > *:after {
+  clear: both;
+}
+.grid-wrapper {
+  // Add a separate outside gutter
+  //padding: 0 @gutter;
+  // The outer gutter of the grid can also be defined as percentage value
+  // since it doesn't correspond with any other grid lines.
+  padding: 0 2%;
+}
+
+// This class could be used to make a grid overlap its borders
+// that were set by its parent element's width.
+.grid.pull {
+  margin: 0 -@gutter/2;
+}
+
+.grid-gutter(16px);
+
+.grid > * {
+  // Grid cells "float" simplier when set to inline-block rather
+  // than floating them the traditional way. But: we cannot easily change their
+  // floating direction, by setting the main content float: right; to appear
+  // right from a sidebar, without changing the markup. However, we still use
+  // display: inline-block; for single-row lists of elements with equal significance.
+  // float: left;
+
+  display: inline-block;
+  vertical-align: top;
+  
+  // Include borders and paddings in final width of the element for simplicity.
+  // This is primarily why this grid is not going to work in IE7.
+  .box-sizing(border-box);
+
+  // Set a gutter width.
+  padding: 0 @gutter/2;
+}
+
+.third-X > *,
+.X-third > *,
+.quarter-X > *,
+.X-quarter > *,
+.fifth-X > *,
+.X-fifth > *,
+.sixth-X > *,
+.X-sixth > *,
+.phi-X > *,
+.X-phi > * {
+  display: block;
+  float: left;
+}
+
+.grid > .grid {
+  margin: 0;
+  padding: 0;
+}
+
+.grid.full > * {
+  .percentalWidth(1);
+}
+
+//@media only screen and (min-width: 480px) {
+@media only screen and (min-width: 30em) {
+  .grid-wrapper {
+    padding: 0 3%;
+  }
+
+  .grid-gutter(16px);
+
+  // The single-row class for native carousel-like behaviour.
+  // Enhance with JS if necessary.
+  .grid.single-row {
+    white-space: nowrap;
+    overflow: auto;
+    // avoid issue: 
+    // when using different font sizes, a vertical scrollbar appears occasionally
+    padding-bottom: 1px;
+    
+    > * {
+      // Set elements to "float" as inline blocks.
+      // There must be no white space between elements.
+      float: none;
+      display: inline-block;
+      // Align elements at the top if height of elements varies.
+      vertical-align: top;
+      // Set white-space to normal to overwrite inheritage from single-row grid
+      white-space: normal;
+    }
+  }
+
+  .grid.halfs > *,
+  .grid.quarters > *,
+  .grid.sixths > *,
+  .grid.fifths > *:nth-child(4),
+  .grid.fifths > *:nth-child(5) {
+    .percentalWidth(1/2);
+  }
+  .grid.thirds > *,
+  .grid.fifths > * {
+    .percentalWidth(1/3);
+  }
+  .grid .grid.halfs > * {
+    .percentalWidth(1);
+  }
+  .grid .grid.thirds > * {
+    .percentalWidth(1);
+  }
+
+  .twoSections(phi, 0.382, 0.618);
+  .twoSections(third, 1/3, 2/3);
+  .twoSections(quarter, 1/3, 2/3);
+  .twoSections(fifth, 1/3, 2/3);
+  .twoSections(sixth, 1/6, 5/6);
+
+}
+
+//@media only screen and (min-width: 569px) {
+@media only screen and (min-width: 35.5625em) {
+  .grid.sixths > * {
+    .percentalWidth(1/3);
+  }
+  .grid-gutter(20px);
+
+  .twoSections(quarter, 1/4, 3/4);
+  .twoSections(fifth, 1/4, 3/4);
+}
+
+//@media only screen and (min-width: 641px) {
+@media only screen and (min-width: 40.0625em) {
+  body {
+    padding: 0 3%;
+  }
+
+  .grid.sixths > * {
+    .percentalWidth(1/4);
+  }
+
+  .twoSections(fifth, 1/4, 3/4);
+}
+
+//@media only screen and (min-width: 769px) {
+@media only screen and (min-width: 48.0625em) {
+  body {
+    padding: 0 6%;
+  }
+  .grid-wrapper {
+    padding: 0 6%;
+  }
+  .grid-gutter(24px);
+
+  //.grid.quarters > * {
+  //  .percentalWidth(1/4);
+  //}
+
+  .grid .grid.halfs > * {
+    .percentalWidth(1/2);
+  }
+  
+  .grid.sixths > * {
+    .percentalWidth(1/5);
+  }
+  
+}
+
+//@media only screen and (min-width: 1025px) {
+@media only screen and (min-width: 64.0625em) {
+  .grid.quarters > * {
+    .percentalWidth(1/4);
+  }
+}
+
+//@media only screen and (min-width: 1201px) {
+@media only screen and (min-width: 75.0625em) {
+  body {
+    padding: 0 10%;
+  }
+  .grid-wrapper {
+    padding: 0 9%;
+  }
+  .grid-gutter(20px);
+
+  .grid .grid.thirds > * {
+    .percentalWidth(1/3);
+  }
+
+  .grid.fifths > *,
+  .grid.fifths > *:nth-child(4),
+  .grid.fifths > *:nth-child(5) {
+    .percentalWidth(1/5);
+  }
+
+  .grid.sixths > * {
+    .percentalWidth(1/6);
+  }
+
+  .twoSections(fifth, 1/5, 4/5);
+}
