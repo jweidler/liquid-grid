@@ -33,7 +33,7 @@
     </div>
   </header>
 
-  <div class="container">
+  <div class="container" id="wrapper">
     
     <div class="grid-wrapper">
       
@@ -278,19 +278,21 @@
 
     jQuery(document).ready(function ($){
 
-      function setPadding() {
-        var unit = 1.5;
-        var horizontalPadding = $(window).width()/(100*unit);
+      function setPadding($el, value) {
+        //var unit = 1.5;
+        var horizontalPadding = $(window).width()/(100*value);
         //console.log(horizontalPadding);
-        //$('body').css({padding: '0 '+horizontalPadding+'%'});
+        $el.css({padding: '0 '+horizontalPadding+'vw'});
       }
 
       //window.countLines();
       $(window).resize(function (){
-        setPadding();
+        setPadding($('body'), 1.25);
+        setPadding($('.grid-wrapper'), 2.5);
       });
 
-      setPadding();
+      setPadding($('body'), 1.25);
+      setPadding($('.grid-wrapper'), 2.5);
 
     });
   </script>
