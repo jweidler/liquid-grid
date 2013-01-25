@@ -269,17 +269,28 @@
 
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script type="text/javascript">
-    function window.countLines() {
+    /*function window.countLines() {
       var divHeight = document.getElementById('paragraph').offsetHeight;
       var lineHeight = parseInt(document.getElementById('paragraph').style.lineHeight);
       var lines = divHeight / lineHeight;
       console.log("Lines: " + lines);
-    }
+    }*/
 
     jQuery(document).ready(function ($){
 
-      //window.countLines();
+      function setPadding() {
+        var unit = 1.5;
+        var horizontalPadding = $(window).width()/(100*unit);
+        //console.log(horizontalPadding);
+        //$('body').css({padding: '0 '+horizontalPadding+'%'});
+      }
 
+      //window.countLines();
+      $(window).resize(function (){
+        setPadding();
+      });
+
+      setPadding();
 
     });
   </script>

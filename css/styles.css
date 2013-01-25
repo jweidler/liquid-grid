@@ -59,13 +59,13 @@ nav li {
   display: inline-block;
   border-radius: 3px;
 }
-nav li a {
+nav a {
   display: block;
   color: #555;
   text-decoration: none;
   padding: 0.75em;
 }
-nav li a:hover {
+nav a:hover {
   color: #111;
 }
 li.current {
