@@ -8,23 +8,25 @@ body {
 
 .clearfix:before,
 .clearfix:after {
-    content: " ";
-    display: table;
+  content: " ";
+  display: table;
 }
 
 .clearfix:after {
-    clear: both;
+  clear: both;
 }
 
-
-.container {
-  margin: 0 auto;
-  padding: 3% 0;
+#wrapper {
   background: #fff;
   border-radius: 50% / 1em;
   box-shadow: 
     0 0 84px rgba(0,0,0,0.2),
     0 4px 4px -4px rgba(0,0,0,0.2);
+}
+.container {
+  margin: 0 auto;
+  max-width: 1024px;
+  padding: 3% 0;
 }
 
 .featured {

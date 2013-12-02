@@ -18,41 +18,31 @@
   <link href="css/styles.css" rel="stylesheet" media="all">
 </head>
 <body>
-  <header role="banner" class="clearfix">
-    <div class="">
-      <h1>liquid<b>grid</b></h1>
-      <nav role="navigation">
-        <ul class="clearfix">
-          <li><a href="#">Home</a></li>
-          <li class="current"><a href="#">Products</a></li>
-          <li><a href="#">About us</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Imprint</a></li>
-        </ul>
-      </nav>
+
+  <div class="container">
+    <div class="grid-wrapper">
+      <header role="banner" class="clearfix">
+        <div class="">
+          <h1>liquid<b>grid</b></h1>
+          <nav role="navigation">
+            <ul class="clearfix">
+              <li><a href="#">Home</a></li>
+              <li class="current"><a href="#">Products</a></li>
+              <li><a href="#">About us</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Imprint</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
     </div>
-  </header>
+  </div>
 
   <div class="container" id="wrapper">
     
     <div class="grid-wrapper">
       
-      <section>
-        <h1>Halfs</h1>
-        <div class="g g-halfs">
-          <div class="g-el">
-            <div class="wrapper">
-              <h1>First column</h1>
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
-            </div>
-          </div><div class="g-el">
-            <div class="wrapper">
-              <h1>Second column</h1>
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       <section>
         <h1>Thirds</h1>
@@ -71,6 +61,23 @@
             <div class="wrapper">
               <h1>Third column</h1>
               <p>Lorem ipsum dolor sit amet, consetetur sadipscing consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h1>Halfs</h1>
+        <div class="g g-halfs">
+          <div class="g-el">
+            <div class="wrapper">
+              <h1>First column</h1>
+              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+            </div>
+          </div><div class="g-el">
+            <div class="wrapper">
+              <h1>Second column</h1>
+              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
             </div>
           </div>
         </div>
@@ -278,21 +285,25 @@
 
     jQuery(document).ready(function ($){
 
-      function setPadding($el, value) {
+      function setPadding($el, value, min, max) {
         //var unit = 1.5;
         var horizontalPadding = $(window).width()/(100*value);
         //console.log(horizontalPadding);
+        if (horizontalPadding < min) horizontalPadding = min;
+        if (horizontalPadding > max) horizontalPadding = max;
         $el.css({padding: '0 '+horizontalPadding+'vw'});
       }
 
       //window.countLines();
       $(window).resize(function (){
-        setPadding($('body'), 1.25);
-        setPadding($('.grid-wrapper'), 2.5);
+        setPadding($('body'), 2.5, 0, 10);
+        //setPadding($('.g > .g-el'), 50, 1.5, 4);
+        setPadding($('.grid-wrapper'), 2.5, 4, 6);
       });
 
-      setPadding($('body'), 1.25);
-      setPadding($('.grid-wrapper'), 2.5);
+      setPadding($('body'), 2.5, 0, 10);
+      //setPadding($('.g > .g-el'), 50, 1.5, 4);
+      setPadding($('.grid-wrapper'), 2.5, 4, 6);
 
     });
   </script>
